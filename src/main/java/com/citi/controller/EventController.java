@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class EventDAO {
+public class EventController {
 	
 	@RequestMapping("/event/view/{id}")
 	@ResponseBody
@@ -30,7 +30,7 @@ public class EventDAO {
 	             Statement stmt = con.createStatement();
 	             ResultSet rs = stmt.executeQuery("select * from Events where EventID = " + eventID);
 	             System.out.println("Pulled data");
-	            
+	             
 	             while (rs.next()) {
 	            	 result.put("OrganiserID", rs.getString(1));
 	            	 
