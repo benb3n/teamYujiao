@@ -1,0 +1,21 @@
+package com.dao;
+
+import java.util.*;
+import com.entity.Event;
+
+public class EventDAO {
+	
+	static ArrayList<Event> eventList;
+	
+	public EventDAO() {
+		 if (eventList == null) {
+	            AccountDAO.EventList = new ArrayList<Event>();
+	            eventList.add(new Event("S1234567A","Kenneth Lee",1200.0f,"2 Room"));
+	            eventList.add(new Event("S1234567B","Eugene Sng",4800f,"3 Room"));
+	            eventList.add(new Event("S1234567C","Jeric Tan",5500.0f,"4 Room"));
+	            eventList.add(new Event("S1234567D","Shaun Teh",80000.0f,"4 Room"));
+	     }
+	 }
+	 
+	 
+}
