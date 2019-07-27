@@ -1,4 +1,6 @@
-GitRepositoriesView.GitDirectories=C\:\\Users\\Jovin\\git\\teamYujiao\\.git;
-GitRepositoriesView.GitDirectories.relative=C\:\\Users\\Jovin\\git\\teamYujiao\\.git;
-RepositorySearchDialogSearchPath=C\:\\Users\\Jovin\\git
+GitRepositoriesView.GitDirectories=C\:\\Users\\Jovin\\git\\teamYujiao\\teamYujiao\\.git;C\:\\Users\\Jovin\\git\\teamYujiao\\.git;C\:\\Users\\Jovin\\Desktop\\git\\teamYujiao\\.git;
+GitRepositoriesView.GitDirectories.relative=C\:\\Users\\Jovin\\git\\teamYujiao\\teamYujiao\\.git;C\:\\Users\\Jovin\\git\\teamYujiao\\.git;.git;
+RepositorySearchDialogSearchPath=C\:\\Users\\Jovin\\Desktop\\git\\teamYujiao
+RepositorySearchDialogSkipHidden=true
+core_autoIgnoreDerivedResources=false
 eclipse.preferences.version=1
