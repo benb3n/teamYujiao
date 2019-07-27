@@ -1,6 +1,8 @@
 
 package com.entity;
 
+import java.util.*;
+
 /**
  *
  * @author jovin ng
@@ -17,6 +19,10 @@ public class Account {
     private String Nationality;
     private String Interest;
     private String Region;
+	private String accountname;
+	private String accounttypeid;
+	private String balance;
+	private String clientid;
 
 
     public Account(String accountid, String accounttypeid, String accountname, String balance, String clientid) {
