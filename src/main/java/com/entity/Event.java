@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Event {
 
-	public class Event {
 		// TODO Auto-generated method stub
 		
 		private String eventID;
@@ -12,14 +11,14 @@ public class Event {
 		private String eventDescription;
 		private Date startTime;
 		private Date endTime;
-		private String minPax;
-		private String maxPax; 
+		private int minPax;
+		private int maxPax; 
 		private String organiserID;
 		private String signupCount;
 		private String status;
 		
-		public Event(int eventID, String eventName, String eventDescription, Date startTime, Date endTime, int minPax,
-				int maxPax, int organiserID, int signupCount, String status) {
+		public Event(String eventID, String eventName, String eventDescription, Date startTime, Date endTime, int minPax,
+				int maxPax, String organiserID, String signupCount, String status) {
 			this.eventID = eventID;
 			this.eventName = eventName;
 			this.eventDescription = eventDescription;
@@ -33,10 +32,10 @@ public class Event {
 		}
 		
 		
-		public int getEventID() {
+		public String getEventID() {
 			return eventID;
 		}
-		public void setEventID(int eventID) {
+		public void setEventID(String eventID) {
 			this.eventID = eventID;
 		}
 		public String getEventName() {
@@ -75,16 +74,16 @@ public class Event {
 		public void setMaxPax(int maxPax) {
 			this.maxPax = maxPax;
 		}
-		public int getOrganiserID() {
+		public String getOrganiserID() {
 			return organiserID;
 		}
-		public void setOrganiserID(int organiserID) {
+		public void setOrganiserID(String organiserID) {
 			this.organiserID = organiserID;
 		}
-		public int getSignupCount() {
+		public String getSignupCount() {
 			return signupCount;
 		}
-		public void setSignupCount(int signupCount) {
+		public void setSignupCount(String signupCount) {
 			this.signupCount = signupCount;
 		}
 		public String getStatus() {
@@ -96,6 +95,6 @@ public class Event {
 		
 		
 
-	}
+	
 
 }
