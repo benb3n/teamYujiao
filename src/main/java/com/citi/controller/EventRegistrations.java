@@ -6,19 +6,24 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventRegistrations {
 
 	
 	@RequestMapping("/event/register/{details}")
 	@ResponseBody
-    Map<String, String> insertEvent(@PathVariable("details")String details) {
-		Map<String, String> result = new HashMap<>();
+	ArrayList<HashMap<String, String>> insertEvent(@PathVariable("details") String details) {
+		  ArrayList<HashMap<String, String>> result = new ArrayList<>();
+	
+    //Map<String, String> insertEvent(@PathVariable("details")String details) {
+		//Map<String, String> result = new HashMap<>();
 		
 		 System.out.println("starting");
 	         try {
@@ -32,7 +37,7 @@ public class EventRegistrations {
 	             String eventID = details.split(":")[0];
 	             String userID = details.split(":")[1];
 	             
-	             stmt.executeUpdate("insert into EventRegistrations (EventID, UserID, Signuptime, Status) Values (" + eventID + "," + userID + ",now(),'pending')");
+	             stmt.executeUpdate("insert into EventRegistrations (EventID, UserID, Signuptime, Status) Values (" + eventID + "," + userID + ",now(),'Registered')");
 	             System.out.println("Inserted data");
 	             
 	            
@@ -48,8 +53,11 @@ public class EventRegistrations {
 	
 	@RequestMapping("/event/withdraw/{details}")
 	@ResponseBody
-    Map<String, String> withdrawEvent(@PathVariable("details")String details) {
-		Map<String, String> result = new HashMap<>();
+	ArrayList<HashMap<String, String>> withdrawEvent(@PathVariable("details") String details) {
+		  ArrayList<HashMap<String, String>> result = new ArrayList<>();
+	
+    //Map<String, String> withdrawEvent(@PathVariable("details")String details) {
+		//Map<String, String> result = new HashMap<>();
 		
 		 System.out.println("starting");
 	         try {
@@ -67,6 +75,11 @@ public class EventRegistrations {
 	             stmt.executeUpdate("update EventRegistrations SET Status = 'withdrawn' where EventID = '" + eventID + "' AND UserID = '" + userID + "'");
 	             System.out.println("Updated data");
 	             
+	             HashMap<String, String> rsJSON = new HashMap<>();
+	            
+	             rsJSON.put("status", "success");
+	             
+	             result.add(rsJSON);
 	            
 	             con.close();
 	         } catch (Exception e) {

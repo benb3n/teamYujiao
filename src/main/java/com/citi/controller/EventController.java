@@ -1,5 +1,5 @@
 package com.citi.controller;
-
+import com.citi.controller.EventService;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,17 +8,43 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventController {
 	
+	@Autowired
+	 EventService service;
+	 
+	 @PostMapping("/events/create")
+	 @ResponseBody
+	 public Map<String, String> createEvent(@RequestParam("OrganiserID") String OrganiserID, @RequestParam("EventName") String EventName,
+	   @RequestParam("EventDescription") String EventDescription, @RequestParam("StartTime") String StartTime,
+	   @RequestParam("EndTime") String EndTime, @RequestParam("MinPax") int MinPax,
+	   @RequestParam("MaxPax") int MaxPax, @RequestParam("SignupCount") int SignupCount,
+	   @RequestParam("Status") String Status) {
+	  return service.createEvent(OrganiserID, EventName, EventDescription, StartTime, EndTime, MinPax, MaxPax, SignupCount, Status);
+	 }
+	
+	
+	 @DeleteMapping("/events/{id}")
+	 @ResponseBody
+	 public Map<String, String> deleteEvent(@PathVariable("id") int id){
+	  return service.deleteEvent(id);  
+	 }
+	 
+	 
 	@RequestMapping("/event/view/{id}")
 	@ResponseBody
-	
 	ArrayList<HashMap<String, String>> viewEventRegistrationByID(@PathVariable("id") int eventID) {
 		  ArrayList<HashMap<String, String>> result = new ArrayList<>();
 	
@@ -78,15 +104,15 @@ public class EventController {
 	            	 HashMap<String, String> rsJSON = new HashMap<>();
 	            	 
 	            	 rsJSON.put("EventID", rs.getString(1));
-	            	 //rsJSON.put("OrganiserID", rs.getString(2));
+	            	 rsJSON.put("OrganiserID", rs.getString(2));
 	            	 rsJSON.put("EventName", rs.getString(3));
 	            	 rsJSON.put("EventDescription", rs.getString(4));
-	            	 //rsJSON.put("StartTime", rs.getString(5));
-	            	 //rsJSON.put("EndTime", rs.getString(6));
-	            	 rsJSON.put("MinPax", ""+rs.getInt(1));
-	            	 rsJSON.put("MaxPax", ""+rs.getInt(2));
-	            	 rsJSON.put("SignupCount", ""+rs.getInt(3));
-	            	 rsJSON.put("Status", rs.getString(7));
+	            	 rsJSON.put("StartTime", rs.getString(5));
+	            	 rsJSON.put("EndTime", rs.getString(6));
+	            	 rsJSON.put("MinPax", ""+rs.getInt(7));
+	            	 rsJSON.put("MaxPax", ""+rs.getInt(8));
+	            	 rsJSON.put("SignupCount", ""+rs.getInt(9));
+	            	 rsJSON.put("Status", rs.getString(10));
 	            	 
 	            	 result.add(rsJSON);
 	            	 
@@ -97,7 +123,7 @@ public class EventController {
 	             System.out.println(e);
 	         }
 	    System.out.println(result.size());  
-	    System.out.println("hi1");  
+	    System.out.println("hi2");  
 		return result;
 //        return "Well Done!! Nice Try!! Good bye!";
     }
@@ -105,8 +131,12 @@ public class EventController {
 	
 	@RequestMapping("/event/view/date/{Dates}")
 	@ResponseBody
-    Map<String, String> viewAllEventsFromDates(@PathVariable("Dates")String Dates) {
-		Map<String, String> result = new HashMap<>();
+	
+	ArrayList<HashMap<String, String>> viewAllEventsByDates(@PathVariable("Dates")String Dates) {
+		  ArrayList<HashMap<String, String>> result = new ArrayList<>();
+	
+    //Map<String, String> viewAllEventsFromDates(@PathVariable("Dates")String Dates) {
+		//Map<String, String> result = new HashMap<>();
 		
 		 System.out.println("starting");
 	         try {
@@ -124,16 +154,21 @@ public class EventController {
 	             System.out.println("Pulled data");
 	             
 	             while (rs.next()) {
-	            	 result.put("EventID", rs.getString(1));
-	            	 result.put("OrganiserID", rs.getString(2));
-	            	 result.put("EventName", rs.getString(3));
-	            	 result.put("EventDescription", rs.getString(4));
-	            	 result.put("StartTime", rs.getString(5));
-	            	 result.put("EndTime", rs.getString(5));
-	            	 result.put("MinPax", ""+rs.getInt(1));
-	            	 result.put("MaxPax", ""+rs.getInt(2));
-	            	 result.put("SignupCount", ""+rs.getInt(3));
-	            	 result.put("Status", rs.getString(6));
+	            	 
+	            	 HashMap<String, String> rsJSON = new HashMap<>();
+	            	 
+	            	 rsJSON.put("EventID", rs.getString(1));
+	            	 rsJSON.put("OrganiserID", rs.getString(2));
+	            	 rsJSON.put("EventName", rs.getString(3));
+	            	 rsJSON.put("EventDescription", rs.getString(4));
+	            	 rsJSON.put("StartTime", rs.getString(5));
+	            	 rsJSON.put("EndTime", rs.getString(6));
+	            	 rsJSON.put("MinPax", ""+rs.getInt(7));
+	            	 rsJSON.put("MaxPax", ""+rs.getInt(8));
+	            	 rsJSON.put("SignupCount", ""+rs.getInt(9));
+	            	 rsJSON.put("Status", rs.getString(10));
+	            	 
+	            	 result.add(rsJSON);
 	            	 
 	                 //return "Read from database : " + rs.getString(1) + "  " + rs.getString(2) ;
 	             }
@@ -149,8 +184,12 @@ public class EventController {
 	
 	@RequestMapping("/event/getEvents/search/{eventName}")
 	@ResponseBody
-    Map<String, String> viewAllEventsByName(@PathVariable("eventName")String eventName) {
-		Map<String, String> result = new HashMap<>();
+	
+	ArrayList<HashMap<String, String>> viewAllEventsByName(@PathVariable("eventName")String eventName) {
+		  ArrayList<HashMap<String, String>> result = new ArrayList<>();
+	
+    //Map<String, String> viewAllEventsByName(@PathVariable("eventName")String eventName) {
+		//Map<String, String> result = new HashMap<>();
 		
 		 System.out.println("starting");
 	         try {
@@ -164,16 +203,21 @@ public class EventController {
 	             System.out.println("Pulled data");
 	             
 	             while (rs.next()) {
-	            	 result.put("EventID", rs.getString(1));
-	            	 result.put("OrganiserID", rs.getString(2));
-	            	 result.put("EventName", rs.getString(3));
-	            	 result.put("EventDescription", rs.getString(4));
-	            	 result.put("StartTime", rs.getString(5));
-	            	 result.put("EndTime", rs.getString(5));
-	            	 result.put("MinPax", ""+rs.getInt(1));
-	            	 result.put("MaxPax", ""+rs.getInt(2));
-	            	 result.put("SignupCount", ""+rs.getInt(3));
-	            	 result.put("Status", rs.getString(6));
+	            	 
+	            	 HashMap<String, String> rsJSON = new HashMap<>();
+	            	 
+	            	 rsJSON.put("EventID", rs.getString(1));
+	            	 rsJSON.put("OrganiserID", rs.getString(2));
+	            	 rsJSON.put("EventName", rs.getString(3));
+	            	 rsJSON.put("EventDescription", rs.getString(4));
+	            	 rsJSON.put("StartTime", rs.getString(5));
+	            	 rsJSON.put("EndTime", rs.getString(6));
+	            	 rsJSON.put("MinPax", ""+rs.getInt(7));
+	            	 rsJSON.put("MaxPax", ""+rs.getInt(8));
+	            	 rsJSON.put("SignupCount", ""+rs.getInt(9));
+	            	 rsJSON.put("Status", rs.getString(10));
+	            	 
+	            	 result.add(rsJSON);
 	            	 
 	                 //return "Read from database : " + rs.getString(1) + "  " + rs.getString(2) ;
 	             }
@@ -189,8 +233,11 @@ public class EventController {
 	
 	@RequestMapping("/event/getEvents")
 	@ResponseBody
-    Map<String, String> viewAllEventsFromToday() {
-		Map<String, String> result = new HashMap<>();
+	ArrayList<HashMap<String, String>> viewAllEventsFromToday() {
+		  ArrayList<HashMap<String, String>> result = new ArrayList<>();
+	
+    //Map<String, String> viewAllEventsFromToday() {
+		//Map<String, String> result = new HashMap<>();
 		
 		 System.out.println("starting");
 	         try {
@@ -206,16 +253,21 @@ public class EventController {
 	             System.out.println("Pulled data");
 	             
 	             while (rs.next()) {
-	            	 result.put("EventID", rs.getString(1));
-	            	 result.put("OrganiserID", rs.getString(2));
-	            	 result.put("EventName", rs.getString(3));
-	            	 result.put("EventDescription", rs.getString(4));
-	            	 result.put("StartTime", rs.getString(5));
-	            	 result.put("EndTime", rs.getString(5));
-	            	 result.put("MinPax", ""+rs.getInt(1));
-	            	 result.put("MaxPax", ""+rs.getInt(2));
-	            	 result.put("SignupCount", ""+rs.getInt(3));
-	            	 result.put("Status", rs.getString(6));
+	            	 
+	            	 HashMap<String, String> rsJSON = new HashMap<>();
+	            	 
+	            	 rsJSON.put("EventID", rs.getString(1));
+	            	 rsJSON.put("OrganiserID", rs.getString(2));
+	            	 rsJSON.put("EventName", rs.getString(3));
+	            	 rsJSON.put("EventDescription", rs.getString(4));
+	            	 rsJSON.put("StartTime", rs.getString(5));
+	            	 rsJSON.put("EndTime", rs.getString(6));
+	            	 rsJSON.put("MinPax", ""+rs.getInt(7));
+	            	 rsJSON.put("MaxPax", ""+rs.getInt(8));
+	            	 rsJSON.put("SignupCount", ""+rs.getInt(9));
+	            	 rsJSON.put("Status", rs.getString(10));
+	            	 
+	            	 result.add(rsJSON);
 	            	 
 	                 //return "Read from database : " + rs.getString(1) + "  " + rs.getString(2) ;
 	             }
